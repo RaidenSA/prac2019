@@ -16,7 +16,7 @@ class City
   int allowanceRate;
   SickCounter deseased; 
   HealthyCounter well; 
-  City(int, int, int);
+  City(int, int, int, int);
   void epidemicDevelopment(); 
   void payment();
 };

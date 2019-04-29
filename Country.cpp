@@ -1,15 +1,13 @@
-#include "country.h"
+#include "Country.h"
 
 Country::Country(int cityCounter, int fundSize, int week,
       int taxRate, int allowanceRate, int vaccinationCost):stock(fundSize)
 {
   numberOfCities = cityCounter;
-  vector<City> cities1;
   for (int i = 0; i < numberOfCities; i++)
   {
-    cities1.push_back(City(taxRate, allowanceRate, vaccinationCost));
+    cities.push_back(City(taxRate, allowanceRate, vaccinationCost, 1+rand()%3));
   };
-  cities = cities1;
   threshold = 50;
   weeks = week;
 };

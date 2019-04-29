@@ -1,8 +1,8 @@
 #include "City.h"
 
-City::City(int tRate, int alRate, int vacCost)
+City::City(int tRate, int alRate, int vacCost, int Type)
 {
-  cityType = 1+rand()%3;
+  cityType = Type;
   well.healthy = cityType*1000;
   funds = 0;
   taxes = 0;
