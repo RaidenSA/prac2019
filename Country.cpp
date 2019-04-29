@@ -14,7 +14,7 @@ Country::Country(int cityCounter, int fundSize, int week,
 
 void Country::payAllAllowance()
 {
-  for (int i=0; i<numberOfCities; i++) //loop for every city
+  for (int i=0; i < numberOfCities; i++) //loop for every city
   {
     stock.payAllowance(cities[i]);
     if (stock.getCoffers() <= 0) break;
@@ -84,4 +84,16 @@ int Country::getIll()
     sum += cities[i].deseased.allSick();   
   };
   return sum;
+};
+
+vector<int> Country::deseasedProportion()
+{
+  vector<int> percentage;
+  for (int i=0; i<numberOfCities; i++)
+  {
+    int proportion = (cities[i].deseased.allSick() * 100) / (cities[i].deseased.allSick() 
+                   + cities[i].well.healthy);
+    percentage.push_back(proportion);
+  };
+  return percentage;
 };
