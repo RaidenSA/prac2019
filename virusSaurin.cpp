@@ -103,9 +103,9 @@
 
 //////Fund
 
-  Fund::Fund()
+  Fund::Fund(int fundSize)
   {
-    coffers = 1000;
+    coffers = fundSize;
   };
 
   int Fund::getCoffers()
@@ -129,18 +129,30 @@
     coffers -= funds;
   };
 
-/////Country
-  Country::Country(int number)
+//Country
+
+  Country::Country(int cityCounter, int fundSize, int mounth):stock(fundSize)
   {
-    numberOfCities=number;
+    numberOfCities = cityCounter;
     vector<City> cities1;
-    for (int i =0; i< numberOfCities; i++)
+    for (int i = 0; i < numberOfCities; i++)
     {
       cities1.push_back(City());
     };
     cities = cities1;
-    threshold =50;
+    threshold = 50;
+	mounth = mounth;
   };
+
+  int Country::step()
+  {
+	if(mounth > 0){
+		timeFloat();
+		mounth--;
+		return 1;
+	}
+	return 0;
+  }
 
   void Country::timeFloat() // 1 step of simulation
   {

@@ -55,14 +55,15 @@ class Country
 { public: 
   int numberOfCities;
   int timeBorders;
+  int mounth;
   Fund stock;
   float threshold;
   vector<City> cities; 
-  Country(int number);
-  Country(int city, int fundSize, int mount);
+  Country(int cityCounter, int fundSize, int mount);
   void timeFloat(); 
   int getHealthy();
   int getIll();
+  int step();
   //vector<int> getIllCities();
 };
 
