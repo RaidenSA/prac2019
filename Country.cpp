@@ -86,7 +86,13 @@ int Country::getIll()
   return sum;
 };
 
-vector<int> Country::deseasedProportion()
+int Country::deseasedProportion()
+{
+  int proportion = getIll() * 100 / (getIll() + getHealthy());
+  return proportion;
+}
+
+vector<int> Country::deseasedProportionCities()
 {
   vector<int> percentage;
   for (int i=0; i<numberOfCities; i++)

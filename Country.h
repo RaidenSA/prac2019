@@ -23,5 +23,6 @@ class Country
   int getHealthy();
   int getIll();
   int step();
-  vector<int> deseasedProportion();
+  int deseasedProportion();
+  vector<int> deseasedProportionCities();
 };
