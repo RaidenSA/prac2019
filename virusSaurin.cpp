@@ -131,7 +131,7 @@
 
 //Country
 
-  Country::Country(int cityCounter, int fundSize, int mounth):stock(fundSize)
+  Country::Country(int cityCounter, int fundSize, int m):stock(fundSize)
   {
     numberOfCities = cityCounter;
     vector<City> cities1;
@@ -141,7 +141,7 @@
     };
     cities = cities1;
     threshold = 50;
-	mounth = mounth;
+	mounth = m;
   };
 
   int Country::step()

@@ -44,7 +44,7 @@ class Fund
 { private:
   int coffers;
   public:
-  Fund();
+  Fund(int fundSize);
   int getCoffers();
   void takeTaxes(City&);
   void payAllowance(City&);
@@ -59,7 +59,7 @@ class Country
   Fund stock;
   float threshold;
   vector<City> cities; 
-  Country(int cityCounter, int fundSize, int mount);
+  Country(int cityCounter, int fundSize, int mounth);
   void timeFloat(); 
   int getHealthy();
   int getIll();
