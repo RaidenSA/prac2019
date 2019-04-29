@@ -11,7 +11,7 @@ class HealthyCounter
   int healthy;
   HealthyCounter();
   void vaccinate(int);
-  int getIll();
+  int getIll(int);
   int getVaccinated();
   int getAlreadyVaccinated();
 };

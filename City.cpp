@@ -16,7 +16,7 @@ void City::epidemicDevelopment() //Main function for making well and ill, paymen
 {
   well.healthy += deseased.cure();//People get cured
   payment(); //We pay allowance and collect taxes
-  int currSick = well.getIll(); //People get ill
+  int currSick = well.getIll(cityType); //People get ill
   deseased.becomeSick(currSick);
   currSick = 0;
   int currVaccinated = funds / vaccinationCost;

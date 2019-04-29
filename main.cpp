@@ -13,42 +13,43 @@
 
 class Gui{
 public:
-    vector<Fl_Input*> inputs;
-    Fl_Multiline_Output* output;
-    Fl_Button* buttonStart;
-    Fl_Button* buttonEnd;
-    Country* country;
-    bool is_ended;
-    int start(); 
+  vector<Fl_Input*> inputs;
+  Fl_Multiline_Output* output;
+  Fl_Button* buttonStart;
+  Fl_Button* buttonEnd;
+  Country* country;
+  bool is_ended;
+  int start(); 
 }gui;
 
 void draw(void*)
 {
-	int end;
-    while((end = gui.country->step())){
-        if(gui.is_ended == false){
-            gui.buttonEnd->show();
-        }
+  int end;
+  while((end = gui.country->step()))
+  {
+    if(gui.is_ended == false)
+    {
+      gui.buttonEnd->show();
+    };
         //Output stats
-        char data[1024];
-		int ill = gui.country->getIll();
-    	int healthy = gui.country->getHealthy();
-    	int coffers = gui.country->stock.getCoffers();
-    	int vaccinated = gui.country->cities[0].well.getAlreadyVaccinated();
-    	sprintf(data, "ill: %d\nhealthy: %d\ncoffers: %d\nvaccinated:%d\n",
-			ill, healthy, coffers, vaccinated);
-        gui.output->value(data);
-        gui.output->show();
-        if(gui.is_ended == false){
-            break;
-        }
-    }
-	if(end == 0){
-		gui.is_ended = true;
-		gui.buttonEnd->hide();
-	}
-    Fl::repeat_timeout(0.5, draw);
-}
+    char data[1024];
+    int ill = gui.country->getIll();
+    int healthy = gui.country->getHealthy();
+    int coffers = gui.country->stock.getCoffers();
+    int vaccinated = gui.country->cities[0].well.getAlreadyVaccinated();
+    sprintf(data, "ill: %d\nhealthy: %d\ncoffers: %d\nvaccinated:%d\n",
+         ill, healthy, coffers, vaccinated);
+    gui.output->value(data);
+    gui.output->show();
+    if(gui.is_ended == false){break;};
+  }
+  if(end == 0)
+  {
+    gui.is_ended = true;
+    gui.buttonEnd->hide();
+  }
+  Fl::repeat_timeout(0.5, draw);
+};
 
 void callbackStart(Fl_Widget *w, void* data)
 {
@@ -67,14 +68,14 @@ void callbackStart(Fl_Widget *w, void* data)
   gui.inputs[4]->hide();
   int vacCost = atoi(gui.inputs[5]->value());
   gui.inputs[5]->hide();
-	gui.country = new Country(cityCounter, fundSize, mounth, tax, allowance,vacCost);
-	Fl::add_timeout(0.5, draw);
+  gui.country = new Country(cityCounter, fundSize, mounth, tax, allowance,vacCost);
+  Fl::add_timeout(0.5, draw);
 }
 
 void callbackStop(Fl_Widget *w, void* data)
 {
-    gui.buttonEnd->hide();
-    gui.is_ended = true;
+  gui.buttonEnd->hide();
+  gui.is_ended = true;
 }
 
 int Gui::start()
@@ -87,7 +88,7 @@ int Gui::start()
   int start_h = 0;
   is_ended = false; 
   Fl_Window *window = new Fl_Window(w, h);
-  buttonStart = new Fl_Button(210, 100, 220, 100, "start simulation");
+  buttonStart = new Fl_Button(210, 100, 260, 100, "start simulation");
   buttonStart->type(FL_NORMAL_BUTTON);
   buttonStart->labelsize(30);
   buttonStart->callback(callbackStart, NULL);
@@ -131,5 +132,6 @@ int Gui::start()
 
 int main()
 {
-	return gui.start();
+  srand (time(NULL)); 
+  return gui.start();
 }

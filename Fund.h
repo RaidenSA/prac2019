@@ -1,4 +1,5 @@
 #pragma once
+#include "City.h"
 #include <cstdlib>
 
 class Fund
