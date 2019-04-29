@@ -23,6 +23,7 @@ class HealthyCounter
   void vaccinate(int);
   int getIll();
   int getVaccinated();
+  int getAlreadyVaccinated();
 };
 
 class City 

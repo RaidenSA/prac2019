@@ -15,7 +15,7 @@
     sick[2]=sick[1];
     sick[1]=sick[0];
     sick[0]=0;
-    return(cured); //Returns number of cured people
+    return cured; //Returns number of cured people
   };
 
   int SickCounter::allSick()
@@ -62,6 +62,11 @@
     vaccinated[1] -= vaccinated[1] / 5;
     vaccinated[0] -= vaccinated[0] / 5;
     return sick; 
+  };
+
+  int HealthyCounter::getAlreadyVaccinated()
+  {
+    return vaccinated[2];
   };
 
 /////City 
@@ -175,7 +180,7 @@
       sum += cities[i].well.healthy; 
       
     };
-    return (sum);
+    return sum;
   };
   int Country::getIll()
   {
@@ -185,7 +190,7 @@
       sum += cities[i].deseased.allSick(); 
       
     };
-    return (sum);
+    return sum;
   };
 
 
