@@ -33,9 +33,11 @@ class City
   int allowance;
   int taxes; 
   int vaccinationCost; 
+  int taxRate;
+  int allowanceRate;
   SickCounter deseased; 
   HealthyCounter well; 
-  City();
+  City(int, int, int);
   void epidemicDevelopment(); 
   void payment();
 };
@@ -55,11 +57,15 @@ class Country
 { public: 
   int numberOfCities;
   int timeBorders;
-  int mounth;
+  int weeks;
   Fund stock;
   float threshold;
   vector<City> cities; 
-  Country(int cityCounter, int fundSize, int mounth);
+  Country(int cityCounter, int fundSize, int week, int taxRate, int allowanceRate,
+    int vaccinationCost);
+  void takeAllTaxes();
+  void payAllAllowance();
+  void developAll();
   void timeFloat(); 
   int getHealthy();
   int getIll();

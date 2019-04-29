@@ -33,10 +33,10 @@ void draw(void*)
         char data[1024];
 		int ill = gui.country->getIll();
     	int healthy = gui.country->getHealthy();
-    	int sick = (gui.country->cities[0].well.healthy - gui.country->cities[0].well.getAlreadyVaccinated())/5;
+    	int coffers = gui.country->stock.getCoffers();
     	int vaccinated = gui.country->cities[0].well.getAlreadyVaccinated();
-    	sprintf(data, "ill: %d\nhealthy: %d\nsick: %d\nvaccinated:%d\n",
-			ill, healthy, sick, vaccinated);
+    	sprintf(data, "ill: %d\nhealthy: %d\ncoffers: %d\nvaccinated:%d\n",
+			ill, healthy, coffers, vaccinated);
         gui.output->value(data);
         gui.output->show();
         if(gui.is_ended == false){
@@ -52,16 +52,22 @@ void draw(void*)
 
 void callbackStart(Fl_Widget *w, void* data)
 {
-    gui.buttonStart->hide();
-    srand(time(NULL));
-    int i = 0;
-    int cityCounter = atoi(gui.inputs[0]->value());
-    gui.inputs[0]->hide();
-    int fundSize = atoi(gui.inputs[1]->value());
-    gui.inputs[1]->hide();
-    int mounth = atoi(gui.inputs[2]->value())*4;
-	gui.inputs[2]->hide();
-	gui.country = new Country(cityCounter, fundSize, mounth);
+  gui.buttonStart->hide();
+  srand(time(NULL));
+  int i = 0;
+  int cityCounter = atoi(gui.inputs[0]->value());
+  gui.inputs[0]->hide();
+  int fundSize = atoi(gui.inputs[1]->value());
+  gui.inputs[1]->hide();
+  int mounth = atoi(gui.inputs[2]->value())*4;
+  gui.inputs[2]->hide();
+  int tax = atoi(gui.inputs[3]->value());
+  gui.inputs[3]->hide();
+  int allowance = atoi(gui.inputs[4]->value());
+  gui.inputs[4]->hide();
+  int vacCost = atoi(gui.inputs[5]->value());
+  gui.inputs[5]->hide();
+	gui.country = new Country(cityCounter, fundSize, mounth, tax, allowance,vacCost);
 	Fl::add_timeout(0.5, draw);
 }
 
@@ -90,7 +96,7 @@ int Gui::start()
   buttonEnd->labelsize(30);
   buttonEnd->callback(callbackStop, NULL);
   buttonEnd->hide();
-  output = new Fl_Multiline_Output(210, 0, 260, 140, "stats");
+  output = new Fl_Multiline_Output(210, 0, 260, 140, "Country stats");
   output->hide();
   output->textsize(30);
   output->value("");
@@ -103,8 +109,20 @@ int Gui::start()
   input->value("1000");
   inputs.push_back(input);
   start_h += size_h;
-  input = new Fl_Input(start_w, start_h, size_w, size_h, "mounth");
+  input = new Fl_Input(start_w, start_h, size_w, size_h, "mounth period");
   input->value("5");
+  inputs.push_back(input);
+  start_h += size_h;
+  input = new Fl_Input(start_w, start_h, size_w, size_h, "tax rate");
+  input->value("1");
+  inputs.push_back(input);
+  start_h += size_h;
+  input = new Fl_Input(start_w, start_h, size_w, size_h, "allowance rate");
+  input->value("3");
+  inputs.push_back(input);
+  start_h += size_h;
+  input = new Fl_Input(start_w, start_h, size_w, size_h, "vaccination cost");
+  input->value("2");
   inputs.push_back(input);
   window->end();
   window->show();

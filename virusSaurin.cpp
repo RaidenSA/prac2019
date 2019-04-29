@@ -56,11 +56,11 @@
 
   int HealthyCounter::getIll() // Returns a number of new ill
   { // Should be much more coplicated, but later
-    int sick = (healthy - vaccinated[2]) / 5;
+    int sick = (healthy - vaccinated[2]) / 4;
     if (sick<=0) sick=0;
     healthy = healthy - sick;
-    vaccinated[1] -= vaccinated[1] / 5;
-    vaccinated[0] -= vaccinated[0] / 5;
+    vaccinated[1] -= vaccinated[1] / 4;
+    vaccinated[0] -= vaccinated[0] / 4;
     return sick; 
   };
 
@@ -71,14 +71,16 @@
 
 /////City 
 
-  City::City()
+  City::City(int tRate, int alRate, int vacCost)
   {
     cityType = 1+rand()%3;
     well.healthy = cityType*1000;
     funds = 0;
     taxes = 0;
-    vaccinationCost =1;
     allowance = 0;
+    vaccinationCost = vacCost;
+    taxRate = tRate;
+    allowanceRate =alRate;
   };
 
   void City::epidemicDevelopment() //Main function for making well and ill, payments.For 1tic
@@ -97,9 +99,10 @@
 
   void City::payment()//Function to count money in city
   {
-    allowance = deseased.allSick()*3;
-    taxes = well.healthy*65/100*3;
+    allowance += deseased.allSick()*allowanceRate;
+    taxes += well.healthy*65/100*taxRate;
   };
+  
 
 //////Fund
 
@@ -121,8 +124,12 @@
 
   void Fund::payAllowance(City &cities)
   {
-    coffers -=cities.allowance;
-    cities.allowance = 0; 
+    int currValue = coffers - cities.allowance;
+    if (currValue >=0)
+    {
+    coffers = currValue;
+    cities.allowance = 0;
+    }; 
   };
   void Fund::payment(int funds)
   {
@@ -131,59 +138,73 @@
 
 //Country
 
-  Country::Country(int cityCounter, int fundSize, int m):stock(fundSize)
+  Country::Country(int cityCounter, int fundSize, int week,
+    int taxRate, int allowanceRate, int vaccinationCost):stock(fundSize)
   {
     numberOfCities = cityCounter;
     vector<City> cities1;
     for (int i = 0; i < numberOfCities; i++)
     {
-      cities1.push_back(City());
+      cities1.push_back(City(taxRate, allowanceRate, vaccinationCost));
     };
     cities = cities1;
     threshold = 50;
-	mounth = m;
+	weeks = week;
   };
 
-  int Country::step()
+void Country::payAllAllowance()
+{
+  for (int i=0; i<numberOfCities; i++) //loop for every city
   {
-	if(mounth > 0){
-		timeFloat();
-		mounth--;
-		return 1;
-	}
-	return 0;
-  }
+    stock.payAllowance(cities[i]);
+    if (stock.getCoffers() <= 0) break;
+  };
+  if (stock.getCoffers() > 0)
+  { 
+    int currFunds = stock.getCoffers()/2;
+    stock.payment(currFunds);
+    for (int i=0; i<numberOfCities; i++)       
+    {
+      cities[i].funds += currFunds/numberOfCities;
+    };
+  }; 
+};
 
-  void Country::timeFloat() // 1 step of simulation
-  {
-    for (int i=0; i<numberOfCities; i++) //loop for every city
-    {
-      stock.payAllowance(cities[i]);
-      if (stock.getCoffers() <= 0) break;
-    };
-    if (stock.getCoffers() > 0)
-    { 
-	int currFunds = stock.getCoffers()/2;
-        stock.payment(currFunds);
-        for (int i=0; i<numberOfCities; i++)
-        {
-          cities[i].funds += currFunds/numberOfCities;
-        };
-    }; 
-     // Here check if coffers is > 0
-     // And desision about vaccination
-    for (int i=0; i<numberOfCities; i++) //loop for every city
-    {
-      cities[i].epidemicDevelopment(); 
-      
-    };
-    for (int i=0; i<numberOfCities; i++) //loop for every city
+void Country::takeAllTaxes()
+{
+  for (int i=0; i<numberOfCities; i++) 
     {
       stock.takeTaxes(cities[i]);
     };
-    
-    //At this point the step is finished and we are redy to display information
-  }
+};
+
+void Country::developAll()
+{
+  for (int i=0; i<numberOfCities; i++) 
+  {
+    cities[i].epidemicDevelopment();   
+  };
+};
+
+void Country::timeFloat() // 1 step of simulation
+{ 
+  takeAllTaxes();
+  payAllAllowance();     
+  developAll();
+  //At this point the step is finished and we are redy to display information
+};
+
+int Country::step()
+{
+  if(weeks > 0)
+  {
+    timeFloat();
+    weeks--;
+    return 1;
+  };
+  return 0;
+};
+
   int Country::getHealthy()
   {
     int sum =0;
