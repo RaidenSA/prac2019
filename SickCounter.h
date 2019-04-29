@@ -2,6 +2,8 @@
 #include <cmath>
 #include <cstdlib>
 
+enum {threeWeeksToCure, twoWeeksToCure, oneWeekToCure, readyToCure};
+
 class SickCounter 
 { private:
   int sick[4];

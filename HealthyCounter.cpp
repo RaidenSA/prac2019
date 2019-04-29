@@ -2,36 +2,36 @@
 
 HealthyCounter::HealthyCounter()
 {
-  vaccinated[0] = 0;
-  vaccinated[1] = 0;
-  vaccinated[2] = 0;
+  vaccinated[newVaccinated] = 0;
+  vaccinated[weekAgoVaccinated] = 0;
+  vaccinated[alreadyVaccinated] = 0;
   healthy = 0;
 }
 
 void  HealthyCounter::vaccinate(int number)
 {
-  vaccinated[2] += vaccinated[1];
-  vaccinated[1] = vaccinated[0];
-  vaccinated[0] = number;
+  vaccinated[alreadyVaccinated] += vaccinated[weekAgoVaccinated];
+  vaccinated[weekAgoVaccinated] = vaccinated[newVaccinated];
+  vaccinated[newVaccinated] = number;
 };
   
 int HealthyCounter::getVaccinated()
 {
-  return (vaccinated[0]+vaccinated[1]+vaccinated[2]);
+  return (vaccinated[newVaccinated]+vaccinated[weekAgoVaccinated]+vaccinated[alreadyVaccinated]);
 };
 
 int HealthyCounter::getIll() // Returns a number of new ill
 { // Should be much more coplicated, but later
-  int sick = (healthy - vaccinated[2]) / 4;
+  int sick = (healthy - vaccinated[alreadyVaccinated]) / 4;
   if (sick<=0) sick=0;
   healthy = healthy - sick;
-  vaccinated[1] -= vaccinated[1] / 4;
-  vaccinated[0] -= vaccinated[0] / 4;
+  vaccinated[weekAgoVaccinated] -= vaccinated[weekAgoVaccinated] / 4;
+  vaccinated[newVaccinated] -= vaccinated[newVaccinated] / 4;
   return sick; 
 };
 
 int HealthyCounter::getAlreadyVaccinated()
 {
-  return vaccinated[2];
+  return vaccinated[alreadyVaccinated];
 };
 

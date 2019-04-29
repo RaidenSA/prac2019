@@ -2,6 +2,8 @@
 #include <cmath>
 #include <cstdlib>
 
+enum {newVaccinated, weekAgoVaccinated, alreadyVaccinated};
+
 class HealthyCounter
 { private:
   int vaccinated[3];
