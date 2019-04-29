@@ -15,6 +15,7 @@ class Gui{
 public:
   vector<Fl_Input*> inputs;
   Fl_Multiline_Output* output;
+  Fl_Multiline_Output* outputCities;
   Fl_Button* buttonStart;
   Fl_Button* buttonEnd;
   Country* country;
@@ -41,6 +42,17 @@ void draw(void*)
          ill, healthy, coffers, vaccinated);
     gui.output->value(data);
     gui.output->show();
+    int ofs = 0;
+    vector<int> deseaseStat = gui.country->deseasedProportionCities();
+    for(int i = 0; i < deseaseStat.size(); i++)
+    {
+      sprintf(data+ofs, "City:%d %d %% ", i+1, deseaseStat[i]);
+      ofs = strlen(data);
+      sprintf(data+ofs, "\n");
+      ofs += 1;
+    }
+    gui.outputCities->value(data);
+    gui.outputCities->show();
     if(gui.is_ended == false){break;};
   }
   if(end == 0)
@@ -92,7 +104,7 @@ int Gui::start()
   buttonStart->type(FL_NORMAL_BUTTON);
   buttonStart->labelsize(30);
   buttonStart->callback(callbackStart, NULL);
-  buttonEnd = new Fl_Button(210, 300, 220, 100, "end simulation");
+  buttonEnd = new Fl_Button(210, 350, 220, 100, "end simulation");
   buttonEnd->type(FL_NORMAL_BUTTON);
   buttonEnd->labelsize(30);
   buttonEnd->callback(callbackStop, NULL);
@@ -101,13 +113,17 @@ int Gui::start()
   output->hide();
   output->textsize(30);
   output->value("");
+  outputCities = new Fl_Multiline_Output(100, 150, 160, 140, "Cities stats");
+  outputCities->hide();
+  outputCities->textsize(20);
+  outputCities->value("");
   Fl_Input* input;
   input = new Fl_Input(start_w, start_h, size_w, size_h, "city counter");
-  input->value("1");
+  input->value("3");
   inputs.push_back(input);
   start_h += size_h;
   input = new Fl_Input(start_w, start_h, size_w, size_h, "fund size");
-  input->value("1000");
+  input->value("3000");
   inputs.push_back(input);
   start_h += size_h;
   input = new Fl_Input(start_w, start_h, size_w, size_h, "mounth period");
