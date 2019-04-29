@@ -1,4 +1,4 @@
-#include "virusSaurin.h"
+#include "Country.h"
 #include <cstdio>
 #include <cstdlib>
 #include <unistd.h>
