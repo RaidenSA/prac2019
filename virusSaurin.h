@@ -59,6 +59,7 @@ class Country
   float threshold;
   vector<City> cities; 
   Country(int number);
+  Country(int city, int fundSize, int mount);
   void timeFloat(); 
   int getHealthy();
   int getIll();
