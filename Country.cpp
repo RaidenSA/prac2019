@@ -86,6 +86,16 @@ int Country::getIll()
   return sum;
 };
 
+int Country::getAllVaccinated()
+{
+  int sum =0;
+  for (int i=0; i<numberOfCities; i++) //loop for every city
+  {
+    sum += cities[i].well.getAlreadyVaccinated();   
+  };
+  return sum;
+};
+
 int Country::deseasedProportion()
 {
   int proportion = getIll() * 100 / (getIll() + getHealthy());

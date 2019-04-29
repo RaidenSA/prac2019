@@ -22,6 +22,7 @@ class Country
   void timeFloat(); 
   int getHealthy();
   int getIll();
+  int getAllVaccinated();
   int step();
   int deseasedProportion();
   vector<int> deseasedProportionCities();

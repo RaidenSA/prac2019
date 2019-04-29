@@ -10,12 +10,14 @@
 #include <FL/Fl_Box.H>
 #include <Fl/Fl_Multiline_Output.H>
 #include <Fl/Fl_Input.H>
+#include <Fl/Fl_Dial.H>
 
 class Gui{
 public:
   vector<Fl_Input*> inputs;
   Fl_Multiline_Output* output;
   Fl_Multiline_Output* outputCities;
+  Fl_Dial* spread;
   Fl_Button* buttonStart;
   Fl_Button* buttonEnd;
   Country* country;
@@ -37,7 +39,7 @@ void draw(void*)
     int ill = gui.country->getIll();
     int healthy = gui.country->getHealthy();
     int coffers = gui.country->stock.getCoffers();
-    int vaccinated = gui.country->cities[0].well.getAlreadyVaccinated();
+    int vaccinated = gui.country->getAllVaccinated();
     sprintf(data, "ill: %d\nhealthy: %d\ncoffers: %d\nvaccinated:%d\n",
          ill, healthy, coffers, vaccinated);
     gui.output->value(data);
@@ -53,6 +55,13 @@ void draw(void*)
     }
     gui.outputCities->value(data);
     gui.outputCities->show();
+    int AllStat=gui.country->deseasedProportion();
+     // Value is between 0 and 1
+    double angleStop =(double)AllStat/100 ;
+    gui.spread->angle1(0);
+    gui.spread->angle2(360);
+    gui.spread->value(angleStop);
+    gui.spread->show();
     if(gui.is_ended == false){break;};
   }
   if(end == 0)
@@ -117,6 +126,12 @@ int Gui::start()
   outputCities->hide();
   outputCities->textsize(20);
   outputCities->value("");
+
+  spread = new Fl_Dial(350, 150, 160, 160, "Desease spread");
+  spread->hide();
+  spread->type(FL_FILL_DIAL);
+  spread->value(0);
+  
   Fl_Input* input;
   input = new Fl_Input(start_w, start_h, size_w, size_h, "city counter");
   input->value("3");
